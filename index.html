@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Factorización General</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.11/nerdamer.core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.11/Algebra.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    <link rel="icon" type="image/png" href="algebra.png" />
+  </script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #FFB74D 0%, #81C784 50%, #64B5F6 100%);
+      padding: 2rem;
+      color: #333;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .contenedor {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #FF9800 0%, #4CAF50 50%, #2196F3 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .header::before {
+      content: '🎯';
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem;
+      border-radius: 50%;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .header .subtitle {
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, #FFB74D 0%, #64B5F6 100%);
+      color: white;
+      padding: 1.5rem;
+      margin: 2rem;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .welcome-card::before {
+      content: '🚀';
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      background: rgba(255,255,255,0.2);
+      padding: 0.3rem;
+      border-radius: 50%;
+    }
+
+    .welcome-card h3 {
+      margin: 0 0 0.5rem 2.5rem;
+      font-size: 1.3rem;
+    }
+
+    .welcome-card p {
+      margin: 0 0 0 2.5rem;
+      opacity: 0.9;
+    }
+
+    .info-card {
+      background: #E8F5E8;
+      border: 2px solid #4CAF50;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 2rem;
+      position: relative;
+    }
+
+    .info-card::before {
+      content: '💡';
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      background: #4CAF50;
+      color: white;
+      padding: 0.3rem;
+      border-radius: 50%;
+    }
+
+    .info-card h4 {
+      margin: 0 0 1rem 2.5rem;
+      color: #2E7D32;
+      font-size: 1.2rem;
+    }
+
+    .info-card p {
+      margin: 0.5rem 0 0.5rem 2.5rem;
+      color: #1B5E20;
+    }
+
+    .methodology-card {
+      background: #E3F2FD;
+      border: 2px solid #2196F3;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 2rem;
+      position: relative;
+    }
+
+    .methodology-card::before {
+      content: '📋';
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      background: #2196F3;
+      color: white;
+      padding: 0.3rem;
+      border-radius: 50%;
+    }
+
+    .methodology-card h4 {
+      margin: 0 0 1rem 2.5rem;
+      color: #1565C0;
+      font-size: 1.2rem;
+    }
+
+    .methodology-card ul {
+      margin: 0.5rem 0 0.5rem 2.5rem;
+      color: #0D47A1;
+    }
+
+    .methodology-card li {
+      margin: 0.3rem 0;
+    }
+
+    .warning-card {
+      background: #FFF3E0;
+      border: 2px solid #FF9800;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 2rem;
+      position: relative;
+    }
+
+    .warning-card::before {
+      content: '⚠️';
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      background: #FF9800;
+      color: white;
+      padding: 0.3rem;
+      border-radius: 50%;
+    }
+
+    .warning-card p {
+      margin: 0 0 0 2.5rem;
+      color: #E65100;
+      font-weight: 500;
+    }
+
+    .input-section {
+      padding: 2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      background-color: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    button {
+      flex: 1;
+      padding: 1rem;
+      font-size: 1rem;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-weight: 600;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .btn-factorizar { background: linear-gradient(135deg, #4CAF50, #45A049); }
+    .btn-copilot { background: linear-gradient(135deg, #2196F3, #1976D2); }
+    .btn-limpiar { background: linear-gradient(135deg, #FF9800, #F57C00); }
+
+    .resultado {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+      border: 2px solid #64B5F6;
+      border-radius: 10px;
+      min-height: 50px;
+      font-size: 1.1rem;
+    }
+
+
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+      background: #f8f9fa;
+    }
+
+    @media (max-width: 768px) {
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <div class="header">
+      <h1>Factorización General</h1>
+      <div class="subtitle">Aprende a factorizar trinomios de la forma ax² + bx + c</div>
+    </div>
+
+    <div class="welcome-card">
+      <h3>¡Bienvenido al mundo de la factorización!</h3>
+      <p>Hoy aprenderás una técnica súper útil: la <strong>factorización</strong>. Es como resolver un rompecabezas matemático. 🧩</p>
+    </div>
+
+    <div class="info-card">
+      <h4>¿Qué vamos a aprender?</h4>
+      <p>Convertir expresiones como: \((x^2 + 5x + 6)\) en productos como: \((x + 2)(x + 3)\)</p>
+    </div>
+
+    <div class="methodology-card">
+      <h4>🔍 Metodología CPR²</h4>
+      <p>En este curso usaremos la metodología CPR² para resolver problemas:</p>
+      <ul>
+        <li><strong>Comprender:</strong> Entender qué tipo de problema tenemos</li>
+        <li><strong>Planificar:</strong> Decidir qué método usar</li>
+        <li><strong>Resolver:</strong> Aplicar el método paso a paso</li>
+        <li><strong>Revisar:</strong> Verificar que nuestra respuesta sea correcta</li>
+      </ul>
+    </div>
+
+    <div class="warning-card">
+      <p><strong>Importante:</strong> Funciona para cualquier coeficiente de x² </p>
+    </div>
+
+    <div class="input-section">
+      <label for="expresion">Expresión algebraica a factorizar:</label>
+      <input type="text" id="expresion" placeholder="Ej. x^2 + 5*x + 6">
+
+      <div class="button-group">
+        <button class="btn-factorizar" onclick="factorizar()">Revisar Expresión</button>
+        <button class="btn-copilot" onclick="abrirCopilot()">Consultar en Copilot</button>
+        <button class="btn-limpiar" onclick="limpiarCampos()">Limpiar Campos</button>
+      </div>
+
+      <div class="resultado" id="resultado"></div>
+    </div>
+
+
+  </div>
+
+  <footer>
+    &copy; 2025 fmartinezb@gmail.com
+  </footer>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+
+    function isValidExpression(expresion) {
+      // Check if it's a polynomial expression (contains x and mathematical operations)
+      return /[x]/.test(expresion) && /[\+\-\*\^]/.test(expresion);
+    }
+
+    function factorizar() {
+      const expresion = document.getElementById("expresion").value.trim();
+      const resultadoDiv = document.getElementById("resultado");
+
+      if (!expresion) {
+        resultadoDiv.innerHTML = "Por favor, ingresa una expresión algebraica.";
+        return;
+      }
+
+      if (!isValidExpression(expresion)) {
+        resultadoDiv.innerHTML = "Lo siento, solo estoy programado para factorizar expresiones algebraicas.";
+        return;
+      }
+
+      try {
+        // Use nerdamer to factor the expression
+        const factorizado = nerdamer(`factor(${expresion})`).toString();
+        
+        if (factorizado === expresion) {
+          resultadoDiv.innerHTML = `La expresión \\(${expresion}\\) no se puede factorizar más o ya está en su forma más simple.`;
+        } else {
+          resultadoDiv.innerHTML = `\\(${expresion} = ${factorizado}\\)`;
+        }
+        
+        // Re-render MathJax
+        MathJax.typesetPromise();
+      } catch (error) {
+        resultadoDiv.innerHTML = "La expresión es Válida. Puedes consultar en Copilot para obtener ayuda.";
+      }
+    }
+
+    function abrirCopilot() {
+      const expresion = document.getElementById("expresion").value.trim();
+      const texto = `Como experto en Matemáticas, factoriza la siguiente expresión algebraica asegurandote de renderizar todas las expresiones LaTex: ${expresion} Al final comprueba que el resultado es correcto`;
+      const prompt = encodeURIComponent(texto);
+      window.open(`https://copilot.microsoft.com/?q=${prompt}`, "_blank");
+    }
+
+    function limpiarCampos() {
+      document.getElementById("expresion").value = "";
+      document.getElementById("resultado").innerHTML = "";
+    }
+
+    // Allow Enter key to trigger factorization
+    document.getElementById("expresion").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        factorizar();
+      }
+    });
+  </script>
+</body>
+</html>
